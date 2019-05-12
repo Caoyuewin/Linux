@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
    perror("pthread_create error:");
  }
  while(1){
-   printf("mainthread id:%p]\n",tid);//tid:地址
+   printf("mainthread id:%p]\n",tid);//tid:线程空间首地址
    sleep(1);
  }
   return 0;
