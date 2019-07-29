@@ -1,4 +1,3 @@
-#pragma once
 #include "tcpsocket.hpp"
 #include <functional>
 
