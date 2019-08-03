@@ -16,7 +16,7 @@ int main() {
   //设置编码格式(客户端与服务端要相同)
   mysql_set_character_set(mysql, "utf8");
   //4. 拼装一个插入数据的SQL
-  char* sql[1024] = {0};
+  char sql[1024] = {0};
   int price = 2000;
   sprintf(sql, "insert into  dish_table values(null, '京酱肉丝', %d)",price);
   //5. 执行SQL语句
