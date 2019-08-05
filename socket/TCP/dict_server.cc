@@ -18,4 +18,5 @@ int main() {
       *resp = it->second;
     }
   });
+  return 0;
 }
