@@ -26,10 +26,116 @@ namespace order_system{
     class DishTable{
         public:
             DishTable(MYSQL* mysql):mysql_(mysql)
-            {}
+        {}
+            //新增菜
+            bool Insert( Json::Value& dish) {
+                char sql[1024 * 4] = {0};
+                sprintf(sql, "insert into dish_table values(null,'%s',%d)",dish["name"].asCString(),dish["price"].asInt());
+                int ret  = mysql_query(mysql_, sql);
+                if(ret != 0) {
+                    printf("执行sql失败! %s\n", mysql_error(mysql_));
+                    return false;
+                }
+                return true;
+            }
+            //查看所有菜品
+            bool SelectAll(Json::Value* dishes) {
+                char sql[1024 * 4] = {0};
+                sprintf(sql, "select * from dish_table");
+                int ret  = mysql_query(mysql_, sql);
+                if(ret != 0) {
+                    printf("执行sql失败! %s\n", mysql_error(mysql_));
+                    return false;
+                }
+                MYSQL_RES* result = mysql_store_result(mysql_);
+                if(result == NULL) {
+                    printf("获取结果失败！%s\n", mysql_error(mysql_));
+                    return false;
+                }
+                int rows = mysql_num_rows(result);
+                for(int i = 0; i < rows; ++i) {
+                    MYSQL_ROW row = mysql_fetch_row(result);
+                    Json::Value dish;
+                    dish["dish_id"] = atoi(row[0]);
+                    dish["name"] = row[1];
+                    dish["price"] = atoi(row[2]);
+                    dishes->append(dish);
+                }
+                return true;
+            }  
+
+            //查看某个菜品
+            bool SelectOne(int32_t dish_id,Json::Value* dish) {
+                char sql[1024 * 4] = {0};
+                sprintf(sql, "select * from dish_table where dish_id = %d",dish_id);
+                int ret  = mysql_query(mysql_, sql);
+                if(ret != 0) {
+                    printf("执行sql失败! %s\n", mysql_error(mysql_));
+                    return false;
+                }
+                MYSQL_RES* result = mysql_store_result(mysql_);
+                if(result == NULL) {
+                    printf("获取结果失败！%s\n", mysql_error(mysql_));
+                    return false;
+                }
+               int rows = mysql_num_rows(result);
+               if(rows != 1) {
+                    printf("查找结果不唯一 rows = %d\n", rows);
+                    return false;
+               }
+               for(int i = 0; i < rows; ++i) {
+                   MYSQL_ROW row = mysql_fetch_row(result);
+                   (*dish)["dish_id"] = atoi(row[0]);
+                   (*dish)["name"] = row[1];
+                   (*dish)["price"] = atoi(row[2]);
+                    break;
+               }
+               return true;
+            }
+            //更新菜品
+            bool Update(const Json::Value& dish) {
+                char sql[1024 * 4] = {0};
+                sprintf(sql,"update dish_table set name = '%s', price = %d where dish_id = %d", dish["name"].asCString(), dish["price"].asInt(), dish["dish_id"].asInt());
+                int ret  = mysql_query(mysql_, sql);
+                if(ret != 0) {
+                    printf("执行sql失败! %s\n", mysql_error(mysql_));
+                    return false;
+                }
+                return true;
+            }
+            //删除菜品
+            bool Delete(const Json::Value& dish) {
+                char sql[1024 * 4] = {0};
+                sprintf(sql,"delete from dish_table where dish_id = %d", dish["dish_id"].asInt());
+                int ret  = mysql_query(mysql_, sql);
+                if(ret != 0) {
+                    printf("执行sql失败! %s\n", mysql_error(mysql_));
+                    return false;
+                }
+                return true;
+                
+            }
 
         private:
             MYSQL* mysql_;
     };
 
+    class OrderTable{
+        public:
+            OrderTable(MYSQL* mysql) : mysql_(mysql) {}
+            //查看所有订单
+            bool SelectAll(Json::Value* orders) {
+
+            }
+            //新增订单
+            bool Insert(const Json::Value& order) {
+
+            }    
+            //改变订单状态
+            bool ChangeState(const Json::Value& order) {
+
+            }
+        private:
+            MYSQL* mysql_;.
+    };
 }//end order_system
