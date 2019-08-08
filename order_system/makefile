@@ -1,6 +1,6 @@
-main:main.c
-  gcc $^ -o $@
+TestSQL:TestSQL.cc
+	g++ $^ -o $@ -L/usr/lib64/mysql -lmysqlclient -ljsoncpp
 
 .PHONY:clean
 clean:
-  rm main
+	rm TestSQL
