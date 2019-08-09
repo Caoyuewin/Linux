@@ -104,9 +104,9 @@ namespace order_system{
                 return true;
             }
             //删除菜品
-            bool Delete(const Json::Value& dish) {
+            bool Delete(int dish_id) {
                 char sql[1024 * 4] = {0};
-                sprintf(sql,"delete from dish_table where dish_id = %d", dish["dish_id"].asInt());
+                sprintf(sql,"delete from dish_table where dish_id = %d", dish_id);
                 int ret  = mysql_query(mysql_, sql);
                 if(ret != 0) {
                     printf("执行sql失败! %s\n", mysql_error(mysql_));

@@ -1,6 +1,6 @@
-HTTP_HelloWorld:HTTP_HelloWorld.cc
-	g++ $^ -o $@ -lpthread -std=c++11
+dish_server:dish_server.cc
+	g++ $^ -o $@ -L/usr/lib64/mysql -lmysqlclient -ljsoncpp -lpthread -std=c++11
 
 .PHONY:clean
 clean:
-	rm HelloWorld
+	rm dish_server 
