@@ -36,7 +36,9 @@ function hideURLbar() {
         <!-- //light-box -->
     </head>
     <body background="/home/cao/Linux/order_system/client/myimages/1.jpg">
-        <div class="bs-docs-example">
+        <div id="app" class="bs-docs-example">
+            <!--<h3 id="app">{{message}}<a class="anchorjs-link" href="#h3.-bootstrap-heading"><span class="anchorjs-icon"></span></a></h3>-->
+            <h3>{{message}}</h3>
             <table class="table">
                 <thead>
                     <tr>
@@ -70,7 +72,27 @@ function hideURLbar() {
             </table>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    message:'汤老师的菜单'
+                    methods: {
+                        Get_dishes() {
+                            $.ajax({
+                                type: "get",
+                                url: "/dish",
+                                context: this, //此处的this值得是app这个Vue对象
+                                success: function(data, status) {
+                                    //这个this值得是context的值。如果context没有值，那么就指的是 $ 这个jQuery对象
+                                    this.dishes = data;
+                                } 
+                            });
+                        }
+                    } 
+                }
+            });
     </body>
 
-
-</html>
+    </html>
